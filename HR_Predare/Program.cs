@@ -17,6 +17,7 @@ namespace HR_Predare
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new HR_Project());
+            //test din branch-ul sima_test
         }
     }
 }
