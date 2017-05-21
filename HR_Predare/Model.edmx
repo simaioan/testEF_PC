@@ -1,0 +1,688 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="HRModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="acte">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="denumire" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="continut" Type="varchar" MaxLength="255" Nullable="false" />
+        </EntityType>
+        <EntityType Name="candidates">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="id_personal" Type="int" Nullable="false" />
+          <Property Name="CV" Type="varchar(max)" />
+        </EntityType>
+        <EntityType Name="employees">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="id_personal" Type="int" Nullable="false" />
+          <Property Name="data_in" Type="date" Nullable="false" />
+          <Property Name="data_out" Type="date" Nullable="false" />
+          <Property Name="registration_nr" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="istoric_cereri">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="id_acte" Type="int" Nullable="false" />
+          <Property Name="id_personal" Type="int" Nullable="false" />
+          <Property Name="data_desc" Type="datetime2" Precision="0" Nullable="false" />
+        </EntityType>
+        <EntityType Name="levels">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="varchar" MaxLength="30" Nullable="false" />
+        </EntityType>
+        <EntityType Name="logs">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="date_in" Type="datetime2" Precision="0" Nullable="false" />
+          <Property Name="date_out" Type="datetime2" Precision="0" Nullable="false" />
+          <Property Name="tabel" Type="int" Nullable="false" />
+          <Property Name="view" Type="int" Nullable="false" />
+          <Property Name="id_user" Type="int" Nullable="false" />
+          <Property Name="form" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="personal">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="phone" Type="int" />
+          <Property Name="address" Type="varchar(max)" />
+          <Property Name="CNP" Type="int" />
+          <Property Name="email" Type="varchar" MaxLength="30" />
+          <Property Name="civilst" Type="varchar(max)" />
+          <Property Name="depart" Type="varchar" MaxLength="30" />
+          <Property Name="sex" Type="varchar" MaxLength="30" />
+          <Property Name="username" Type="varchar" MaxLength="30" />
+          <Property Name="pass" Type="varchar" MaxLength="30" />
+          <Property Name="id_level" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="pontaje">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="id_personal" Type="int" Nullable="false" />
+          <Property Name="date_in" Type="datetime2" Precision="0" Nullable="false" />
+          <Property Name="date_out" Type="datetime2" Precision="0" />
+        </EntityType>
+        <EntityType Name="rules">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="id_level" Type="int" Nullable="false" />
+          <Property Name="view_form" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="trainers">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="id_personal" Type="int" Nullable="false" />
+          <Property Name="schedule" Type="datetime2" Precision="6" Nullable="false" />
+          <Property Name="beginning" Type="date" Nullable="false" />
+          <Property Name="finish" Type="date" Nullable="false" />
+        </EntityType>
+        <Association Name="candidates_ibfk_1">
+          <End Role="personal" Type="Self.personal" Multiplicity="1" />
+          <End Role="candidates" Type="Self.candidates" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="personal">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="candidates">
+              <PropertyRef Name="id_personal" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="employees_ibfk_1">
+          <End Role="personal" Type="Self.personal" Multiplicity="1" />
+          <End Role="employees" Type="Self.employees" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="personal">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="employees">
+              <PropertyRef Name="id_personal" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="istoric_cereri_ibfk_1">
+          <End Role="acte" Type="Self.acte" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="istoric_cereri" Type="Self.istoric_cereri" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="acte">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="istoric_cereri">
+              <PropertyRef Name="id_acte" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="istoric_cereri_ibfk_2">
+          <End Role="personal" Type="Self.personal" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="istoric_cereri" Type="Self.istoric_cereri" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="personal">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="istoric_cereri">
+              <PropertyRef Name="id_personal" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="levels_personal_1">
+          <End Role="levels" Type="Self.levels" Multiplicity="1" />
+          <End Role="personal" Type="Self.personal" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="levels">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="personal">
+              <PropertyRef Name="id_level" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="personal_logs_1">
+          <End Role="personal" Type="Self.personal" Multiplicity="1" />
+          <End Role="logs" Type="Self.logs" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="personal">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="logs">
+              <PropertyRef Name="id_user" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="pontaje_ibfk_1">
+          <End Role="personal" Type="Self.personal" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="pontaje" Type="Self.pontaje" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="personal">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="pontaje">
+              <PropertyRef Name="id_personal" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="rules_ibfk_1">
+          <End Role="levels" Type="Self.levels" Multiplicity="1" />
+          <End Role="rules" Type="Self.rules" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="levels">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="rules">
+              <PropertyRef Name="id_level" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="trainers_ibfk_1">
+          <End Role="personal" Type="Self.personal" Multiplicity="1" />
+          <End Role="trainers" Type="Self.trainers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="personal">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="trainers">
+              <PropertyRef Name="id_personal" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="HRModelStoreContainer">
+          <EntitySet Name="acte" EntityType="Self.acte" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="candidates" EntityType="Self.candidates" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="employees" EntityType="Self.employees" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="istoric_cereri" EntityType="Self.istoric_cereri" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="levels" EntityType="Self.levels" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="logs" EntityType="Self.logs" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="personal" EntityType="Self.personal" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="pontaje" EntityType="Self.pontaje" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="rules" EntityType="Self.rules" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="trainers" EntityType="Self.trainers" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="candidates_ibfk_1" Association="Self.candidates_ibfk_1">
+            <End Role="personal" EntitySet="personal" />
+            <End Role="candidates" EntitySet="candidates" />
+          </AssociationSet>
+          <AssociationSet Name="employees_ibfk_1" Association="Self.employees_ibfk_1">
+            <End Role="personal" EntitySet="personal" />
+            <End Role="employees" EntitySet="employees" />
+          </AssociationSet>
+          <AssociationSet Name="istoric_cereri_ibfk_1" Association="Self.istoric_cereri_ibfk_1">
+            <End Role="acte" EntitySet="acte" />
+            <End Role="istoric_cereri" EntitySet="istoric_cereri" />
+          </AssociationSet>
+          <AssociationSet Name="istoric_cereri_ibfk_2" Association="Self.istoric_cereri_ibfk_2">
+            <End Role="personal" EntitySet="personal" />
+            <End Role="istoric_cereri" EntitySet="istoric_cereri" />
+          </AssociationSet>
+          <AssociationSet Name="levels_personal_1" Association="Self.levels_personal_1">
+            <End Role="levels" EntitySet="levels" />
+            <End Role="personal" EntitySet="personal" />
+          </AssociationSet>
+          <AssociationSet Name="personal_logs_1" Association="Self.personal_logs_1">
+            <End Role="personal" EntitySet="personal" />
+            <End Role="logs" EntitySet="logs" />
+          </AssociationSet>
+          <AssociationSet Name="pontaje_ibfk_1" Association="Self.pontaje_ibfk_1">
+            <End Role="personal" EntitySet="personal" />
+            <End Role="pontaje" EntitySet="pontaje" />
+          </AssociationSet>
+          <AssociationSet Name="rules_ibfk_1" Association="Self.rules_ibfk_1">
+            <End Role="levels" EntitySet="levels" />
+            <End Role="rules" EntitySet="rules" />
+          </AssociationSet>
+          <AssociationSet Name="trainers_ibfk_1" Association="Self.trainers_ibfk_1">
+            <End Role="personal" EntitySet="personal" />
+            <End Role="trainers" EntitySet="trainers" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="HRModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="acte">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="denumire" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="continut" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="istoric_cereri" Relationship="Self.istoric_cereri_ibfk_1" FromRole="acte" ToRole="istoric_cereri" />
+        </EntityType>
+        <EntityType Name="candidate">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="id_personal" Type="Int32" Nullable="false" />
+          <Property Name="CV" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="personal" Relationship="Self.candidates_ibfk_1" FromRole="candidates" ToRole="personal" />
+        </EntityType>
+        <EntityType Name="employee">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="id_personal" Type="Int32" Nullable="false" />
+          <Property Name="data_in" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="data_out" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="registration_nr" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="personal" Relationship="Self.employees_ibfk_1" FromRole="employees" ToRole="personal" />
+        </EntityType>
+        <EntityType Name="istoric_cereri">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="id_acte" Type="Int32" Nullable="false" />
+          <Property Name="id_personal" Type="Int32" Nullable="false" />
+          <Property Name="data_desc" Type="DateTime" Nullable="false" Precision="0" />
+          <NavigationProperty Name="acte" Relationship="Self.istoric_cereri_ibfk_1" FromRole="istoric_cereri" ToRole="acte" />
+          <NavigationProperty Name="personal" Relationship="Self.istoric_cereri_ibfk_2" FromRole="istoric_cereri" ToRole="personal" />
+        </EntityType>
+        <EntityType Name="level">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="personals" Relationship="Self.levels_personal_1" FromRole="levels" ToRole="personal" />
+          <NavigationProperty Name="rules" Relationship="Self.rules_ibfk_1" FromRole="levels" ToRole="rules" />
+        </EntityType>
+        <EntityType Name="log">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="date_in" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="date_out" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="tabel" Type="Int32" Nullable="false" />
+          <Property Name="view" Type="Int32" Nullable="false" />
+          <Property Name="id_user" Type="Int32" Nullable="false" />
+          <Property Name="form" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="personal" Relationship="Self.personal_logs_1" FromRole="logs" ToRole="personal" />
+        </EntityType>
+        <EntityType Name="personal">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="phone" Type="Int32" />
+          <Property Name="address" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="CNP" Type="Int32" />
+          <Property Name="email" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="civilst" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="depart" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="sex" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="username" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="pass" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="id_level" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="candidates" Relationship="Self.candidates_ibfk_1" FromRole="personal" ToRole="candidates" />
+          <NavigationProperty Name="employees" Relationship="Self.employees_ibfk_1" FromRole="personal" ToRole="employees" />
+          <NavigationProperty Name="istoric_cereri" Relationship="Self.istoric_cereri_ibfk_2" FromRole="personal" ToRole="istoric_cereri" />
+          <NavigationProperty Name="level" Relationship="Self.levels_personal_1" FromRole="personal" ToRole="levels" />
+          <NavigationProperty Name="logs" Relationship="Self.personal_logs_1" FromRole="personal" ToRole="logs" />
+          <NavigationProperty Name="pontajes" Relationship="Self.pontaje_ibfk_1" FromRole="personal" ToRole="pontaje" />
+          <NavigationProperty Name="trainers" Relationship="Self.trainers_ibfk_1" FromRole="personal" ToRole="trainers" />
+        </EntityType>
+        <EntityType Name="pontaje">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="id_personal" Type="Int32" Nullable="false" />
+          <Property Name="date_in" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="date_out" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="personal" Relationship="Self.pontaje_ibfk_1" FromRole="pontaje" ToRole="personal" />
+        </EntityType>
+        <EntityType Name="rule">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="id_level" Type="Int32" Nullable="false" />
+          <Property Name="view_form" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="level" Relationship="Self.rules_ibfk_1" FromRole="rules" ToRole="levels" />
+        </EntityType>
+        <EntityType Name="trainer">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="id_personal" Type="Int32" Nullable="false" />
+          <Property Name="schedule" Type="DateTime" Nullable="false" Precision="6" />
+          <Property Name="beginning" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="finish" Type="DateTime" Nullable="false" Precision="0" />
+          <NavigationProperty Name="personal" Relationship="Self.trainers_ibfk_1" FromRole="trainers" ToRole="personal" />
+        </EntityType>
+        <Association Name="istoric_cereri_ibfk_1">
+          <End Role="acte" Type="Self.acte" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="istoric_cereri" Type="Self.istoric_cereri" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="acte">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="istoric_cereri">
+              <PropertyRef Name="id_acte" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="candidates_ibfk_1">
+          <End Role="personal" Type="Self.personal" Multiplicity="1" />
+          <End Role="candidates" Type="Self.candidate" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="personal">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="candidates">
+              <PropertyRef Name="id_personal" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="employees_ibfk_1">
+          <End Role="personal" Type="Self.personal" Multiplicity="1" />
+          <End Role="employees" Type="Self.employee" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="personal">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="employees">
+              <PropertyRef Name="id_personal" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="istoric_cereri_ibfk_2">
+          <End Role="personal" Type="Self.personal" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="istoric_cereri" Type="Self.istoric_cereri" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="personal">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="istoric_cereri">
+              <PropertyRef Name="id_personal" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="levels_personal_1">
+          <End Role="levels" Type="Self.level" Multiplicity="1" />
+          <End Role="personal" Type="Self.personal" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="levels">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="personal">
+              <PropertyRef Name="id_level" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="rules_ibfk_1">
+          <End Role="levels" Type="Self.level" Multiplicity="1" />
+          <End Role="rules" Type="Self.rule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="levels">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="rules">
+              <PropertyRef Name="id_level" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="personal_logs_1">
+          <End Role="personal" Type="Self.personal" Multiplicity="1" />
+          <End Role="logs" Type="Self.log" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="personal">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="logs">
+              <PropertyRef Name="id_user" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="pontaje_ibfk_1">
+          <End Role="personal" Type="Self.personal" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="pontaje" Type="Self.pontaje" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="personal">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="pontaje">
+              <PropertyRef Name="id_personal" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="trainers_ibfk_1">
+          <End Role="personal" Type="Self.personal" Multiplicity="1" />
+          <End Role="trainers" Type="Self.trainer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="personal">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="trainers">
+              <PropertyRef Name="id_personal" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="HREntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="actes" EntityType="Self.acte" />
+          <EntitySet Name="candidates" EntityType="Self.candidate" />
+          <EntitySet Name="employees" EntityType="Self.employee" />
+          <EntitySet Name="istoric_cereri" EntityType="Self.istoric_cereri" />
+          <EntitySet Name="levels" EntityType="Self.level" />
+          <EntitySet Name="logs" EntityType="Self.log" />
+          <EntitySet Name="personals" EntityType="Self.personal" />
+          <EntitySet Name="pontajes" EntityType="Self.pontaje" />
+          <EntitySet Name="rules" EntityType="Self.rule" />
+          <EntitySet Name="trainers" EntityType="Self.trainer" />
+          <AssociationSet Name="istoric_cereri_ibfk_1" Association="Self.istoric_cereri_ibfk_1">
+            <End Role="acte" EntitySet="actes" />
+            <End Role="istoric_cereri" EntitySet="istoric_cereri" />
+          </AssociationSet>
+          <AssociationSet Name="candidates_ibfk_1" Association="Self.candidates_ibfk_1">
+            <End Role="personal" EntitySet="personals" />
+            <End Role="candidates" EntitySet="candidates" />
+          </AssociationSet>
+          <AssociationSet Name="employees_ibfk_1" Association="Self.employees_ibfk_1">
+            <End Role="personal" EntitySet="personals" />
+            <End Role="employees" EntitySet="employees" />
+          </AssociationSet>
+          <AssociationSet Name="istoric_cereri_ibfk_2" Association="Self.istoric_cereri_ibfk_2">
+            <End Role="personal" EntitySet="personals" />
+            <End Role="istoric_cereri" EntitySet="istoric_cereri" />
+          </AssociationSet>
+          <AssociationSet Name="levels_personal_1" Association="Self.levels_personal_1">
+            <End Role="levels" EntitySet="levels" />
+            <End Role="personal" EntitySet="personals" />
+          </AssociationSet>
+          <AssociationSet Name="rules_ibfk_1" Association="Self.rules_ibfk_1">
+            <End Role="levels" EntitySet="levels" />
+            <End Role="rules" EntitySet="rules" />
+          </AssociationSet>
+          <AssociationSet Name="personal_logs_1" Association="Self.personal_logs_1">
+            <End Role="personal" EntitySet="personals" />
+            <End Role="logs" EntitySet="logs" />
+          </AssociationSet>
+          <AssociationSet Name="pontaje_ibfk_1" Association="Self.pontaje_ibfk_1">
+            <End Role="personal" EntitySet="personals" />
+            <End Role="pontaje" EntitySet="pontajes" />
+          </AssociationSet>
+          <AssociationSet Name="trainers_ibfk_1" Association="Self.trainers_ibfk_1">
+            <End Role="personal" EntitySet="personals" />
+            <End Role="trainers" EntitySet="trainers" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="HRModelStoreContainer" CdmEntityContainer="HREntities">
+          <EntitySetMapping Name="actes">
+            <EntityTypeMapping TypeName="HRModel.acte">
+              <MappingFragment StoreEntitySet="acte">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="denumire" ColumnName="denumire" />
+                <ScalarProperty Name="continut" ColumnName="continut" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="candidates">
+            <EntityTypeMapping TypeName="HRModel.candidate">
+              <MappingFragment StoreEntitySet="candidates">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="id_personal" ColumnName="id_personal" />
+                <ScalarProperty Name="CV" ColumnName="CV" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="employees">
+            <EntityTypeMapping TypeName="HRModel.employee">
+              <MappingFragment StoreEntitySet="employees">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="id_personal" ColumnName="id_personal" />
+                <ScalarProperty Name="data_in" ColumnName="data_in" />
+                <ScalarProperty Name="data_out" ColumnName="data_out" />
+                <ScalarProperty Name="registration_nr" ColumnName="registration_nr" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="istoric_cereri">
+            <EntityTypeMapping TypeName="HRModel.istoric_cereri">
+              <MappingFragment StoreEntitySet="istoric_cereri">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="id_acte" ColumnName="id_acte" />
+                <ScalarProperty Name="id_personal" ColumnName="id_personal" />
+                <ScalarProperty Name="data_desc" ColumnName="data_desc" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="levels">
+            <EntityTypeMapping TypeName="HRModel.level">
+              <MappingFragment StoreEntitySet="levels">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="logs">
+            <EntityTypeMapping TypeName="HRModel.log">
+              <MappingFragment StoreEntitySet="logs">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="date_in" ColumnName="date_in" />
+                <ScalarProperty Name="date_out" ColumnName="date_out" />
+                <ScalarProperty Name="tabel" ColumnName="tabel" />
+                <ScalarProperty Name="view" ColumnName="view" />
+                <ScalarProperty Name="id_user" ColumnName="id_user" />
+                <ScalarProperty Name="form" ColumnName="form" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="personals">
+            <EntityTypeMapping TypeName="HRModel.personal">
+              <MappingFragment StoreEntitySet="personal">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="phone" ColumnName="phone" />
+                <ScalarProperty Name="address" ColumnName="address" />
+                <ScalarProperty Name="CNP" ColumnName="CNP" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="civilst" ColumnName="civilst" />
+                <ScalarProperty Name="depart" ColumnName="depart" />
+                <ScalarProperty Name="sex" ColumnName="sex" />
+                <ScalarProperty Name="username" ColumnName="username" />
+                <ScalarProperty Name="pass" ColumnName="pass" />
+                <ScalarProperty Name="id_level" ColumnName="id_level" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="pontajes">
+            <EntityTypeMapping TypeName="HRModel.pontaje">
+              <MappingFragment StoreEntitySet="pontaje">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="id_personal" ColumnName="id_personal" />
+                <ScalarProperty Name="date_in" ColumnName="date_in" />
+                <ScalarProperty Name="date_out" ColumnName="date_out" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="rules">
+            <EntityTypeMapping TypeName="HRModel.rule">
+              <MappingFragment StoreEntitySet="rules">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="id_level" ColumnName="id_level" />
+                <ScalarProperty Name="view_form" ColumnName="view_form" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="trainers">
+            <EntityTypeMapping TypeName="HRModel.trainer">
+              <MappingFragment StoreEntitySet="trainers">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="id_personal" ColumnName="id_personal" />
+                <ScalarProperty Name="schedule" ColumnName="schedule" />
+                <ScalarProperty Name="beginning" ColumnName="beginning" />
+                <ScalarProperty Name="finish" ColumnName="finish" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
