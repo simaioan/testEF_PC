@@ -69,6 +69,12 @@
     <Compile Include="employee.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
+    <Compile Include="frmTestGit.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmTestGit.Designer.cs">
+      <DependentUpon>frmTestGit.cs</DependentUpon>
+    </Compile>
     <Compile Include="frm_Cerere_Acte.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -155,6 +161,9 @@
     <Compile Include="trainer.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="frmTestGit.resx">
+      <DependentUpon>frmTestGit.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="frm_Cerere_Acte.resx">
       <DependentUpon>frm_Cerere_Acte.cs</DependentUpon>
     </EmbeddedResource>
